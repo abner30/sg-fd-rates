@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Singapore Fixed Deposit Rates</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Public+Sans:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#f6f7f5;--panel:#ffffff;--fg:#17211c;--muted:#5c6a63;--line:#d9dfdb;--accent:#1f6f50;--ok:#1f7a4d;--warn:#a85d00;--bad:#b3261e;--sans:'Public Sans',system-ui,-apple-system,'Segoe UI',sans-serif;--serif:'Newsreader',Georgia,'Times New Roman',serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101613;--panel:#18211c;--fg:#e8eee9;--muted:#9bada3;--line:#2c3a33;--accent:#5fc59a;--ok:#5fc59a;--warn:#e0a34a;--bad:#f2877f;color-scheme:dark}}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);padding-inline:16px;padding-block:28px;line-height:1.4}
+
+.fd{max-width:980px;margin-inline:auto;font-family:var(--sans);color:var(--fg);display:flex;flex-direction:column;gap:1.25rem}
+.fd *{box-sizing:border-box}
+.fd h1{font-family:var(--serif);font-weight:400;font-size:clamp(1.9rem,5vw,2.75rem);line-height:1.1;margin:0;text-wrap:balance}
+.fd h2{font-size:1.15rem;font-weight:600;margin:0}
+.fd .sub{color:var(--muted);font-size:.82rem;margin:0;line-height:1.45}
+.fd .lede{font-size:1.05rem;line-height:1.5;margin:.6rem 0 0;max-width:62ch}
+.fd .lede b{font-weight:600}
+.fd .picker{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:1.1rem;display:flex;flex-direction:column;gap:1rem}
+.fd .q{display:flex;flex-direction:column;gap:.5rem}
+.fd .q label,.fd .q .ql{font-size:.82rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.fd .amt{display:flex;align-items:center;gap:.5rem;border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:.55rem .8rem;max-width:16rem}
+.fd .amt:focus-within{border-color:var(--fg)}
+.fd .amt .cur{color:var(--muted)}
+.fd .amt input{all:unset;flex:1;min-width:0;font:inherit;font-size:1.25rem;font-variant-numeric:tabular-nums;color:var(--fg)}
+.fd select{font:inherit;font-size:1rem;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:.55rem .8rem;max-width:16rem}
+.fd .chips{display:flex;flex-wrap:wrap;gap:.4rem}
+.fd .chip{font:inherit;font-size:.95rem;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:99px;padding:.4rem .9rem;cursor:pointer}
+.fd .chip[aria-pressed=true]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.fd .results{display:flex;flex-direction:column;gap:.75rem}
+.fd .res{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:1.1rem;display:grid;grid-template-columns:2rem minmax(0,1fr) auto;gap:.25rem 1rem;align-items:start}
+.fd .res.first{border-color:var(--fg)}
+.fd .res .rk{font-family:var(--serif);font-size:1.4rem;color:var(--muted);line-height:1.2}
+.fd .res .nm{font-size:1.05rem;font-weight:600}
+.fd .res .meta{font-size:.95rem;color:var(--muted);margin-top:.15rem}
+.fd .res .rate{font-family:var(--serif);font-size:2.25rem;line-height:1;text-align:right;font-variant-numeric:tabular-nums}
+.fd .res .rate small{display:block;font-family:var(--sans);font-size:.82rem;color:var(--muted);margin-top:.2rem}
+.fd .res .bar{grid-column:2 / 4;height:6px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:.35rem}
+.fd .res .bar i{display:block;height:100%;border-radius:99px;background:var(--fg)}
+.fd .res .need{grid-column:2 / 4;font-size:.95rem;line-height:1.45;margin-top:.4rem}
+.fd .res .tog{grid-column:2 / 4;justify-self:start;font:inherit;font-size:.95rem;font-weight:600;color:var(--fg);background:none;border:1px solid var(--line);border-radius:99px;padding:.35rem .9rem;cursor:pointer;margin-top:.4rem}
+.fd .res .tog:hover{border-color:var(--fg)}
+.fd .res .reqp{grid-column:2 / 4;border-top:1px solid var(--line);margin-top:.5rem;padding-top:.6rem;display:grid;grid-template-columns:minmax(6.5rem,max-content) minmax(0,1fr);gap:.4rem 1rem;font-size:.95rem;line-height:1.45}
+.fd .res .reqp[hidden]{display:none}
+.fd .res .reqp dt{color:var(--muted);font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;padding-top:.1rem}
+.fd .res .reqp dd{margin:0}
+.fd .chip.na{border-style:dashed;color:var(--muted)}
+.fd .callout{background:var(--panel);border:1px solid var(--warn);border-radius:10px;padding:1.1rem;line-height:1.5;font-size:.95rem}
+.fd .callout b{font-weight:600}
+.fd .early{display:flex;flex-direction:column;gap:.5rem}
+.fd .early .cp{display:flex;flex-direction:column;gap:.1rem}
+.fd .early .cp b{font-weight:600}
+.fd .early .fine2{color:var(--muted);font-size:.82rem}
+.fd .res .foot{grid-column:2 / 4;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 1rem;margin-top:.3rem;font-size:.82rem;color:var(--muted)}
+.fd .tag{border:1px solid currentColor;border-radius:99px;padding:0 .55rem;font-size:.72rem;white-space:nowrap}
+.fd .tag.ok{color:var(--ok)}.fd .tag.chk{color:var(--warn)}
+.fd a.go{color:var(--fg);font-weight:600;text-underline-offset:3px}
+.fd .more{align-self:flex-start;font:inherit;font-size:.95rem;background:none;color:var(--fg);border:1px solid var(--line);border-radius:99px;padding:.45rem 1rem;cursor:pointer}
+.fd details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:0 1.1rem}
+.fd summary{cursor:pointer;padding:1.1rem 0;font-size:1.15rem;font-weight:600;list-style-position:inside}
+.fd details[open] summary{padding-bottom:.5rem}
+.fd details .inner{padding-bottom:1.1rem;display:flex;flex-direction:column;gap:.75rem}
+.fd .scroll{overflow-x:auto;max-width:100%}
+.fd table{border-collapse:separate;border-spacing:0;width:100%;font-size:.82rem;font-variant-numeric:tabular-nums}
+.fd th{text-align:left;font-weight:600;color:var(--muted);padding:.45rem .6rem;white-space:nowrap;border-bottom:1px solid var(--line);background:var(--panel)}
+.fd td{padding:.5rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+.fd td.wide{min-width:18rem;line-height:1.4}
+.fd .mx td.bk,.fd .mx th.bk{position:sticky;left:0;background:var(--panel);z-index:1;font-weight:600;white-space:nowrap}
+.fd .mx td.c{text-align:center;min-width:4.6rem;padding:.3rem .35rem}
+.fd .mx .cell{border-radius:6px;padding:.3rem .2rem;display:flex;flex-direction:column;align-items:center;line-height:1.2}
+.fd .mx .cell .v{font-size:.95rem}
+.fd .mx .cell .n{font-size:.68rem;color:var(--muted)}
+.fd .mx .cell.top{outline:2px solid var(--fg);outline-offset:-2px}
+.fd .mx .cell.top .v{font-weight:700}
+.fd .mx td.empty{color:var(--muted);text-align:center;opacity:.4}
+.fd a{color:inherit;text-underline-offset:2px}
+.fd .fine{font-size:.82rem;color:var(--muted);line-height:1.5;max-width:75ch;border-top:1px solid var(--line);padding-top:1rem}
+
+
+@media (max-width:520px){.fd .res{grid-template-columns:1.5rem minmax(0,1fr) auto}.fd .res .rate{font-size:1.8rem}}
+
+</style>
+</head>
+<body>
+<div class="fd" id="fd">
+  <header>
+    <p class="sub">Rates checked <span class="js-label">—</span> · SGD fixed deposits · Open to any new customer</p>
+    <h1>Where to put your fixed deposit today</h1>
+    <p class="lede"><span data-h="all">Highest rate on offer: <b class="hr">—</b> at <b class="hb">—</b> for <span class="ht">—</span> months, with at least <span class="hm">—</span> to deposit.</span> <span data-h="small">Starting smaller, at <span id="fd-small"></span>: <b class="hr">—</b> at <b class="hb">—</b>.</span></p>
+  </header>
+  
+
+  <section class="picker" aria-label="Find your best rate">
+    <div class="q"><label for="fd-amt">How much are you depositing?</label><div class="amt"><span class="cur">S$</span><input id="fd-amt" type="text" inputmode="numeric" autocomplete="off" placeholder="20,000" aria-label="Deposit amount in Singapore dollars"></div></div>
+    <div class="q"><span class="ql">For how long?</span><div class="chips" id="fd-ten" role="group" aria-label="Tenor"></div></div>
+  </section>
+
+  <section class="results" id="fd-res" aria-live="polite"></section>
+  <button class="more" id="fd-more" hidden>Show all banks</button>
+
+  <details id="mxd">
+    <summary>Compare every bank and tenor</summary>
+    <div class="inner">
+      <p class="sub">Best rate each bank pays at the deposit size chosen above, per year. Smaller figure is the minimum deposit. Outlined cell is the best in that column.</p>
+      <div class="scroll"><table class="mx" id="mx"><thead></thead><tbody></tbody></table></div>
+      <p class="sub" id="fd-dead"></p>
+    </div>
+  </details>
+
+  <details id="reqd">
+    <summary>What each bank needs from you</summary>
+    <div class="inner">
+      <div class="scroll"><table data-row-key="bank"><thead><tr>
+        <th>Bank</th><th>Where to place</th><th>What to know</th><th>Rate as of</th><th>Bank page</th>
+      </tr></thead><tbody id="acc-body"></tbody></table></div>
+    </div>
+  </details>
+
+  <p class="fine">Rates are indicative, taken from each bank's published promotion pages and can change without notice. "Confirm with bank" means the figure came from a source other than the bank's own page, so check it before you transfer. This is general information, not financial advice. Singapore dollar deposits at banks are insured by SDIC up to the legal limit per depositor per bank.</p>
+</div>
+<script>
+
+(function(){
+const RATES=[{"id":"maybank-6-20000-standalone-online-or-branch","bank":"Maybank","tenor_m":6,"rate":1.95,"min_sgd":20000,"channel":"Standalone, online or branch","note":""},{"id":"maybank-9-20000-standalone-online-or-branch","bank":"Maybank","tenor_m":9,"rate":1.8,"min_sgd":20000,"channel":"Standalone, online or branch","note":""},{"id":"maybank-12-20000-standalone-online-or-branch","bank":"Maybank","tenor_m":12,"rate":2.0,"min_sgd":20000,"channel":"Standalone, online or branch","note":""},{"id":"maybank-9-20000-bundle-online-or-branch","bank":"Maybank","tenor_m":9,"rate":1.91,"min_sgd":20000,"channel":"Bundle, online or branch","note":"Blended effective rate; 10% earmarked in savings"},{"id":"maybank-12-20000-bundle-online-or-branch","bank":"Maybank","tenor_m":12,"rate":2.05,"min_sgd":20000,"channel":"Bundle, online or branch","note":"Blended effective rate; 10% earmarked in savings"},{"id":"cimb-3-10000-online","bank":"CIMB","tenor_m":3,"rate":1.35,"min_sgd":10000,"channel":"Online","note":""},{"id":"cimb-6-10000-online","bank":"CIMB","tenor_m":6,"rate":1.75,"min_sgd":10000,"channel":"Online","note":""},{"id":"cimb-9-10000-online","bank":"CIMB","tenor_m":9,"rate":1.75,"min_sgd":10000,"channel":"Online","note":""},{"id":"cimb-12-10000-online","bank":"CIMB","tenor_m":12,"rate":1.95,"min_sgd":10000,"channel":"Online","note":""},{"id":"ocbc-6-20000-online","bank":"OCBC","tenor_m":6,"rate":1.5,"min_sgd":20000,"channel":"Online","note":""},{"id":"ocbc-12-20000-online","bank":"OCBC","tenor_m":12,"rate":1.65,"min_sgd":20000,"channel":"Online","note":""},{"id":"ocbc-6-20000-branch","bank":"OCBC","tenor_m":6,"rate":1.45,"min_sgd":20000,"channel":"Branch","note":""},{"id":"ocbc-12-20000-branch","bank":"OCBC","tenor_m":12,"rate":1.6,"min_sgd":20000,"channel":"Branch","note":""},{"id":"uob-6-10000-uob-tmrw-app","bank":"UOB","tenor_m":6,"rate":1.6,"min_sgd":10000,"channel":"UOB TMRW app","note":""},{"id":"uob-10-10000-uob-tmrw-app","bank":"UOB","tenor_m":10,"rate":1.65,"min_sgd":10000,"channel":"UOB TMRW app","note":""},{"id":"uob-12-10000-uob-tmrw-app","bank":"UOB","tenor_m":12,"rate":1.7,"min_sgd":10000,"channel":"UOB TMRW app","note":""},{"id":"standard-chartered-12-25000-online-or-sc-mobile","bank":"Standard Chartered","tenor_m":12,"rate":1.65,"min_sgd":25000,"channel":"Online or SC Mobile","note":""},{"id":"dbs-posb-6-1000-online-or-branch","bank":"DBS / POSB","tenor_m":6,"rate":0.8,"min_sgd":1000,"max_sgd":19999,"channel":"Online or branch","note":""},{"id":"dbs-posb-9-1000-online-or-branch","bank":"DBS / POSB","tenor_m":9,"rate":1.0,"min_sgd":1000,"max_sgd":19999,"channel":"Online or branch","note":""},{"id":"dbs-posb-12-1000-online-or-branch","bank":"DBS / POSB","tenor_m":12,"rate":1.0,"min_sgd":1000,"max_sgd":19999,"channel":"Online or branch","note":""},{"id":"dbs-posb-1-1000-online-or-branch","bank":"DBS / POSB","tenor_m":1,"rate":0.05,"min_sgd":1000,"max_sgd":19999,"channel":"Online or branch","note":""},{"id":"dbs-posb-1-20000-online-or-branch","bank":"DBS / POSB","tenor_m":1,"rate":0.05,"min_sgd":20000,"channel":"Online or branch","note":"DBS pays 0.05% from S$20,000"},{"id":"dbs-posb-2-1000-online-or-branch","bank":"DBS / POSB","tenor_m":2,"rate":0.05,"min_sgd":1000,"max_sgd":19999,"channel":"Online or branch","note":""},{"id":"dbs-posb-2-20000-online-or-branch","bank":"DBS / POSB","tenor_m":2,"rate":0.05,"min_sgd":20000,"channel":"Online or branch","note":"DBS pays 0.05% from S$20,000"},{"id":"dbs-posb-3-1000-online-or-branch","bank":"DBS / POSB","tenor_m":3,"rate":0.15,"min_sgd":1000,"max_sgd":19999,"channel":"Online or branch","note":""},{"id":"dbs-posb-3-20000-online-or-branch","bank":"DBS / POSB","tenor_m":3,"rate":0.05,"min_sgd":20000,"channel":"Online or branch","note":"DBS pays 0.05% from S$20,000"},{"id":"dbs-posb-4-1000-online-or-branch","bank":"DBS / POSB","tenor_m":4,"rate":0.25,"min_sgd":1000,"max_sgd":19999,"channel":"Online or branch","note":""},{"id":"dbs-posb-4-20000-online-or-branch","bank":"DBS / POSB","tenor_m":4,"rate":0.05,"min_sgd":20000,"channel":"Online or branch","note":"DBS pays 0.05% from S$20,000"},{"id":"dbs-posb-5-1000-online-or-branch","bank":"DBS / POSB","tenor_m":5,"rate":0.4,"min_sgd":1000,"max_sgd":19999,"channel":"Online or branch","note":""},{"id":"dbs-posb-5-20000-online-or-branch","bank":"DBS / POSB","tenor_m":5,"rate":0.05,"min_sgd":20000,"channel":"Online or branch","note":"DBS pays 0.05% from S$20,000"},{"id":"dbs-posb-6-20000-online-or-branch","bank":"DBS / POSB","tenor_m":6,"rate":0.05,"min_sgd":20000,"channel":"Online or branch","note":"DBS pays 0.05% from S$20,000"},{"id":"dbs-posb-7-1000-online-or-branch","bank":"DBS / POSB","tenor_m":7,"rate":0.95,"min_sgd":1000,"max_sgd":19999,"channel":"Online or branch","note":""},{"id":"dbs-posb-7-20000-online-or-branch","bank":"DBS / POSB","tenor_m":7,"rate":0.05,"min_sgd":20000,"channel":"Online or branch","note":"DBS pays 0.05% from S$20,000"},{"id":"dbs-posb-8-1000-online-or-branch","bank":"DBS / POSB","tenor_m":8,"rate":1.0,"min_sgd":1000,"max_sgd":19999,"channel":"Online or branch","note":""},{"id":"dbs-posb-8-20000-online-or-branch","bank":"DBS / POSB","tenor_m":8,"rate":0.05,"min_sgd":20000,"channel":"Online or branch","note":"DBS pays 0.05% from S$20,000"},{"id":"dbs-posb-9-20000-online-or-branch","bank":"DBS / POSB","tenor_m":9,"rate":0.05,"min_sgd":20000,"channel":"Online or branch","note":"DBS pays 0.05% from S$20,000"},{"id":"dbs-posb-10-1000-online-or-branch","bank":"DBS / POSB","tenor_m":10,"rate":1.0,"min_sgd":1000,"max_sgd":19999,"channel":"Online or branch","note":""},{"id":"dbs-posb-10-20000-online-or-branch","bank":"DBS / POSB","tenor_m":10,"rate":0.05,"min_sgd":20000,"channel":"Online or branch","note":"DBS pays 0.05% from S$20,000"},{"id":"dbs-posb-11-1000-online-or-branch","bank":"DBS / POSB","tenor_m":11,"rate":1.0,"min_sgd":1000,"max_sgd":19999,"channel":"Online or branch","note":""},{"id":"dbs-posb-11-20000-online-or-branch","bank":"DBS / POSB","tenor_m":11,"rate":0.05,"min_sgd":20000,"channel":"Online or branch","note":"DBS pays 0.05% from S$20,000"},{"id":"dbs-posb-12-20000-online-or-branch","bank":"DBS / POSB","tenor_m":12,"rate":0.05,"min_sgd":20000,"channel":"Online or branch","note":"DBS pays 0.05% from S$20,000"}];
+const BANKS=[{"bank":"Maybank","kind":"Bank","channel":"Online or branch","access":"Standalone rates need nothing extra. The bundle rate needs 10% of the deposit kept in a Maybank savings account, and the figure shown is the blended rate.","conf":"Certain","src":"https://www.maybank2u.com.sg/en/promotions/deposits/sgd-time-deposit.page","asof":"13 Oct","early_nil_months":3,"early_text":"No interest is paid within the first 3 months.","early_after":"Maybank pays interest only for the days your money was placed, at the lower of its lowest savings account rate at that time or your promised rate. That is usually far below the rate you signed up for. Taking out part of the deposit counts as taking it all out early.","early_src":"https://www.maybank2u.com.sg/iwov-resources/sg/pdf/promos/terms-and-conditions-sgd-time-deposits.pdf"},{"bank":"CIMB","kind":"Bank","channel":"Online","access":"Rate is from early October, so confirm it in the app before placing.","conf":"Likely","src":"https://www.cimb.com.sg/en/personal/banking-with-us/accounts/fixed-deposit/cimb-sgd-fixed-deposit-account.html","asof":"7 Oct","early_text":"Early withdrawal is allowed, but CIMB may keep part of the profit already paid. This is from CIMB's fixed deposit-i FAQ and the amount is not published, so confirm with CIMB before you place the deposit.","early_src":"https://www.cimb.com.sg/en/personal/help-support/faq/accounts/why-wait-fixed-deposit-i/can-i-withdraw-my-funds-before-maturity-date.html"},{"bank":"OCBC","kind":"Bank","channel":"Online or branch","access":"Only money from outside OCBC counts. Online pays more than branch.","conf":"Certain","src":"https://www.ocbc.com/personal-banking/deposits/fixed-deposit-account","asof":"13 Oct","early_text":"You may receive less interest or none, depending on how much of the term is left, and OCBC may charge an early withdrawal fee. OCBC does not publish the rate or the fee, so ask OCBC for the exact amount before you withdraw.","early_src":"https://www.ocbc.com/personal-banking/help-and-support/accounts/time-deposits"},{"bank":"UOB","kind":"Bank","channel":"UOB TMRW app","access":"Only money from outside UOB counts. Withdraw early and you lose all the interest. Offer ends 31 Oct.","conf":"Certain","src":"https://www.uob.com.sg/personal/save/fixed-deposits/singapore-dollar-fixed-deposit.page","asof":"23 Sep","early_nil_always":true,"early_text":"No interest is paid.","early_src":"https://www.uob.com.sg/personal/save/fixed-deposits/singapore-dollar-fixed-deposit.page"},{"bank":"Standard Chartered","kind":"Bank","channel":"Online or SC Mobile","access":"Only money from outside Standard Chartered counts. This rate changes weekly; the current offer ends 15 Oct.","conf":"Certain","src":"https://www.sc.com/sg/save/time-deposits/singapore-dollar-time-deposit/","asof":"9 Oct","early_text":"The promotional rate is paid only if you keep the deposit until maturity, and Standard Chartered can require you to give back interest it has awarded. The standard early withdrawal terms are not shown on the promotion page, so ask Standard Chartered for the exact amount before you withdraw.","early_src":"https://www.sc.com/sg/terms-and-conditions/exclsgdtd"},{"bank":"DBS / POSB","kind":"Bank","channel":"Online or branch","access":"Only worth it below S$20,000. From S$20,000 the rate falls to 0.05% because DBS looks at your total fixed deposit balance.","conf":"Likely","src":"https://www.dbs.com.sg/personal/rates-online/fixed-deposit-rate-singapore-dollar.page","asof":"13 Oct","early_text":"Any interest is worked out at the lowest deposit rate DBS offers, not the rate you signed up for. DBS does not publish a fee or a rule by how far into the term you are. You cannot withdraw on the maturity day or the day before it. DBS shows you the amount you would receive before you confirm.","early_src":"https://dbs.com.sg/personal/support/bank-account-fixed-deposit-withdrawal.html"}];
+const LABEL='13 Oct 2026';
+const fmtN=n=>Math.round(Number(n)).toLocaleString('en-US');
+const dmax=(a,f)=>{let m;a.forEach(x=>{const v=f?f(x):x;if(v!=null&&(m===undefined||v>m))m=v;});return m;};
+const dmin=(a,f)=>{let m;a.forEach(x=>{const v=f?f(x):x;if(v!=null&&(m===undefined||v<m))m=v;});return m;};
+const dext=(a,f)=>[dmin(a,f),dmax(a,f)];
+const R='fd_rates';
+const $=s=>document.querySelector(s);
+const pct=n=>Number(n).toFixed(2)+'%';
+const sgd=n=>(n==null||n==='')?'':'S$'+fmtN(Math.round(Number(n)));
+const SMALL=20000, TOP=5;
+const TEN=[1,2,3,4,5,6,8,9,10,12,18,24];
+const CH=[['any','Any length'],[3,'3 months'],[6,'6 months'],[9,'9 months'],[12,'12 months'],[18,'18 months'],[24,'24 months']];
+let amount=SMALL, ten='any', showAll=false, cache=null;
+const openIds=new Set();
+const ok0=b=>b.conf==='Certain';
+
+
+const amtIn=$('#fd-amt');
+amtIn.value=fmtN(amount);
+$('#fd-small').textContent=sgd(SMALL);
+amtIn.addEventListener('input',()=>{const d=amtIn.value.replace(/\D/g,'').slice(0,10);amount=d?+d:0;amtIn.value=d?fmtN(amount):'';showAll=false;drawAll();});
+const chips=$('#fd-ten');
+CH.forEach(([v,l])=>{const b=document.createElement('button');b.type='button';b.className='chip';b.textContent=l;b.dataset.v=v;b.setAttribute('aria-pressed',String(v===ten));
+  b.addEventListener('click',()=>{ten=v;showAll=false;drawAll();});chips.append(b);});
+$('#fd-more').addEventListener('click',()=>{showAll=true;drawAll();});
+
+const elig=r=>+r.min_sgd<=amount&&(r.max_sgd==null||amount<=+r.max_sgd);
+const mark=(el)=>el;
+const E=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;};
+
+function drawResults(){
+  const rows=cache.rows,info=new Map(cache.banks.map(b=>[b.bank,b]));
+  const best=new Map();
+  rows.filter(r=>elig(r)&&(ten==='any'||r.tenor_m===+ten)).forEach(r=>{const c=best.get(r.bank);if(!c||r.rate>c.rate||(r.rate===c.rate&&r.min_sgd<c.min_sgd))best.set(r.bank,r);});
+  const list=[...best.values()].sort((a,b)=>b.rate-a.rate||a.min_sgd-b.min_sgd||a.bank.localeCompare(b.bank));
+  const box=$('#fd-res');box.textContent='';
+  document.querySelectorAll('#fd-ten .chip').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===String(ten))));
+  const offered=new Set(rows.map(r=>r.tenor_m));
+  document.querySelectorAll('#fd-ten .chip').forEach(b=>{const na=b.dataset.v!=='any'&&!offered.has(+b.dataset.v);b.classList.toggle('na',na);b.title=na?'No bank on this page offers this length':'';});
+  if(ten!=='any'&&!offered.has(+ten)){
+    const c=E('div','callout');const lens=[...offered].sort((a,b)=>a-b);
+    c.append(E('b',null,'No bank on this page offers '+(/^(8|11|18)$/.test(String(ten))?'an ':'a ')+ten+'-month fixed deposit.'),document.createTextNode(' None of the banks listed here publish a rate for that length, so there is nothing to compare. Lengths you can choose: '+lens.join(', ')+' months.'));
+    box.append(c);$('#fd-more').hidden=true;return;}
+  if(!amount){box.append(E('p','sub','Enter an amount to see the best rates.'));$('#fd-more').hidden=true;return;}
+  if(!list.length){box.append(E('p','sub','No bank in this list offers that length at this deposit size. Try another length or amount.'));$('#fd-more').hidden=true;return;}
+  const shown=showAll?list:list.slice(0,TOP);
+  const top=list[0].rate;
+  shown.forEach((r,i)=>{
+    const b=info.get(r.bank)||{};
+    const card=E('article','res'+(i===0?' first':''));
+    card.append(E('div','rk',String(i+1)));
+    const mid=E('div');mid.append(E('div','nm',r.bank));
+    const meta=E('div','meta');
+    const t=mark(E('span',null,String(r.tenor_m)),r.id,'tenor_m');
+    const mn=mark(E('span',null,sgd(r.min_sgd)),r.id,'min_sgd');
+    meta.append(t,document.createTextNode(' months · from '),mn,document.createTextNode(' · '+(r.channel||b.channel||'')));
+    mid.append(meta);card.append(mid);
+    const rate=E('div','rate');rate.append(mark(E('span',null,pct(r.rate)),r.id,'rate'),E('small',null,'per year'));
+    card.append(rate);
+    const bar=E('div','bar');const fill=E('i');fill.style.width=Math.max(4,Math.round(r.rate/top*100))+'%';bar.append(fill);card.append(bar);
+    const pid='req-'+r.id;
+    const tog=E('button','tog');tog.type='button';tog.setAttribute('aria-controls',pid);
+    const pan=E('dl','reqp');pan.id=pid;
+    const rowsDef=[];
+    rowsDef.push(['Deposit',(r.max_sgd!=null?sgd(r.min_sgd)+' to '+sgd(r.max_sgd):'At least '+sgd(r.min_sgd))+' for '+r.tenor_m+' months']);
+    rowsDef.push(['Where to place',r.channel||b.channel||'']);
+    rowsDef.push(['What you need to do',b.access||'',['fd_banks','access',b.bank]]);
+    if(r.note)rowsDef.push(['About this rate',r.note,[R,'note',r.id]]);
+    rowsDef.push(['Rate as of',b.asof||'',['fd_banks','asof',b.bank]]);
+    rowsDef.push(['Confirmation',ok0(b)?'Read on the bank\'s own page':'Not read on the bank\'s own page. Confirm with the bank before you transfer.']);
+    rowsDef.forEach(([k,v,m])=>{if(!v)return;const dt=E('dt',null,k),dd=E('dd',null,v);if(m){}pan.append(dt,dd);});
+    if(b.early_text){
+      const dt=E('dt',null,'If you take it out early'),dd=E('dd'),box2=E('div','early');
+      box2.append(E('div','fine2','Based on '+sgd(amount)+' placed for '+r.tenor_m+' months with '+r.bank+'.'));
+      [[0.25,'a quarter of the way'],[0.5,'halfway'],[0.75,'three quarters of the way']].forEach(([f,lab])=>{
+        const m=Number((r.tenor_m*f).toFixed(1));let line;
+        if(b.early_nil_always)line='No interest is paid. You get back your '+sgd(amount)+' only.';
+        else if(b.early_nil_months!=null){const n=+b.early_nil_months;line=m<n?'No interest is paid. You get back your '+sgd(amount)+' only.':(m===n?'This is right at the '+n+'-month cut-off. Confirm with the bank whether interest is paid.':b.early_after);}
+        else line=b.early_text;
+        const cp=E('div','cp');cp.append(E('b',null,'After '+m+' months, '+lab),E('span',null,line));box2.append(cp);});
+      if(typeof b.early_src==='string'&&b.early_src.startsWith('https://')){const a=E('a','go','Terms I read');a.href=b.early_src;a.target='_blank';a.rel='noopener noreferrer';box2.append(a);}
+      box2.append(E('div','fine2','Early withdrawal terms can change. Ask the bank for the exact amount before you withdraw.'));
+      dd.append(box2);pan.append(dt,dd);}
+    const sync=()=>{const o=openIds.has(r.id);pan.hidden=!o;tog.setAttribute('aria-expanded',String(o));tog.textContent=o?'Hide requirements':'See requirements';};
+    tog.addEventListener('click',()=>{if(openIds.has(r.id))openIds.delete(r.id);else openIds.add(r.id);sync();});
+    sync();card.append(tog,pan);
+    const foot=E('div','foot');
+    const ok=b.conf==='Certain';
+    foot.append(E('span','tag '+(ok?'ok':'chk'),ok?'Confirmed on bank site':'Confirm with bank'));
+    if(b.asof)foot.append(E('span',null,'Rate as of '+b.asof));
+    if(typeof b.src==='string'&&b.src.startsWith('https://')){const a=E('a','go','Bank page');a.href=b.src;a.target='_blank';a.rel='noopener noreferrer';foot.append(a);}
+    card.append(foot);
+    box.append(card);
+  });
+  const more=$('#fd-more');more.hidden=showAll||list.length<=TOP;more.textContent='Show all '+list.length+' banks';
+}
+function drawMatrix(){
+  const rows=cache.rows,banks=cache.banks;
+  const best=new Map();
+  if(amount)rows.filter(elig).forEach(r=>{const k=r.bank+'|'+r.tenor_m;const c=best.get(k);if(!c||r.rate>c.rate)best.set(k,r);});
+  const bb=b=>dmax(TEN,t=>{const x=best.get(b+'|'+t);return x?x.rate:undefined;});
+  const names=banks.map(b=>b.bank);
+  const live=names.filter(b=>bb(b)!=null).sort((a,b)=>bb(b)-bb(a)||a.localeCompare(b));
+  const dead=names.filter(b=>bb(b)==null);
+  const colMax={};TEN.forEach(t=>{colMax[t]=dmax(live,b=>{const x=best.get(b+'|'+t);return x?x.rate:undefined;});});
+  const ext=dext([...best.values()],d=>d.rate);
+  const head=$('#mx thead');head.textContent='';
+  const hr=document.createElement('tr');const h0=E('th','bk','Bank');hr.append(h0);
+  TEN.forEach(t=>{const th=E('th',null,t+' mo');th.style.textAlign='center';hr.append(th);});head.append(hr);
+  const tb=$('#mx tbody');tb.textContent='';
+  live.forEach(b=>{const tr=document.createElement('tr');tr.append(E('td','bk',b));
+    TEN.forEach(t=>{const td=document.createElement('td');const x=best.get(b+'|'+t);
+      if(!x){td.className='empty';td.textContent='·';}
+      else{td.className='c';const cell=E('div','cell'+(x.rate===colMax[t]?' top':''));
+        const f=(ext[1]-ext[0])>0?(x.rate-ext[0])/(ext[1]-ext[0]):0;
+        cell.style.background='color-mix(in srgb, var(--accent) '+Math.round(8+f*52)+'%, var(--color-panel))';
+        cell.append(mark(E('span','v',pct(x.rate)),x.id,'rate'),mark(E('span','n',sgd(x.min_sgd)),x.id,'min_sgd'));
+        td.append(cell);}
+      tr.append(td);});
+    tb.append(tr);});
+  const why=b=>{const rs=rows.filter(r=>r.bank===b);const mn=dmin(rs,r=>r.min_sgd),mx=dmax(rs,r=>r.max_sgd==null?Infinity:r.max_sgd);return amount<mn?b+' (minimum '+sgd(mn)+')':b+' (maximum '+sgd(mx)+')';};
+  $('#fd-dead').textContent=amount&&dead.length?'Cannot take '+sgd(amount)+': '+dead.map(why).join(', ')+'.':'';
+}
+function drawAll(){if(!cache)return;drawResults();drawMatrix();}
+function fillBanks(rows){
+  const tb=$('#acc-body');tb.textContent='';
+  rows.forEach(r=>{const tr=document.createElement('tr');tr.dataset.key=r.bank;
+    tr.append(E('td',null,r.bank),E('td',null,r.channel),E('td','wide',r.access),E('td',null,r.asof));
+    const td=document.createElement('td');
+    if(typeof r.src==='string'&&r.src.startsWith('https://')){const a=E('a',null,'Open');a.href=r.src;a.target='_blank';a.rel='noopener noreferrer';td.append(a);}
+    tr.append(td);tb.append(tr);});
+}
+const set=(src,where,field,txt)=>{document.querySelectorAll('[data-source="'+src+'"][data-field="'+field+'"][data-where="'+where+'"]').forEach(e=>e.textContent=txt);};
+cache={rows:RATES.map(r=>Object.assign({},r,{rate:+r.rate,tenor_m:+r.tenor_m,min_sgd:+r.min_sgd,max_sgd:r.max_sgd==null?null:+r.max_sgd})),banks:BANKS};
+fillBanks(BANKS);drawAll();
+document.querySelectorAll('.js-label').forEach(e=>e.textContent=LABEL);
+const pick=f=>cache.rows.filter(f).sort((a,b)=>b.rate-a.rate||a.min_sgd-b.min_sgd)[0];
+const setH=(k,c)=>{if(!c)return;const w=document.querySelector('[data-h="'+k+'"]');if(!w)return;w.querySelector('.hr').textContent=pct(c.rate);w.querySelector('.hb').textContent=c.bank;const t=w.querySelector('.ht');if(t)t.textContent=c.tenor_m;const mm=w.querySelector('.hm');if(mm)mm.textContent=sgd(c.min_sgd);};
+setH('all',pick(()=>true));setH('small',pick(r=>r.min_sgd<=20000&&(r.max_sgd==null||r.max_sgd>=20000)));
+})();
+</script>
+</body>
+</html>
